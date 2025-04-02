@@ -35,6 +35,14 @@ const itemsDrawer = [
     drawerIcon: ({ size, color }: { size: number, color: string }) => (
       <FontAwesome5 name="file-invoice-dollar" size={17} color={color} />
     )
+  },
+  {
+    name: 'ceramic',
+    drawerLabel: 'Ceramica',
+    headerTitle: 'Ceramica',
+    drawerIcon: ({ size, color }: { size: number, color: string }) => (
+      <Entypo name="grid" size={17} color={color} />
+    )
   }
 ]
 
