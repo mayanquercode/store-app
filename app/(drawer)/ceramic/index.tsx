@@ -1,4 +1,5 @@
 import Button from "@/components/Button/Button";
+import DrawerBar from "@/components/DrawerBar/DrawerBar";
 import IconButton from "@/components/IconButton/IconButton";
 import LayoutScreen from "@/layouts/LayoutScreen";
 import { AntDesign } from "@expo/vector-icons";
@@ -15,6 +16,7 @@ const StackIndex = () => {
 
   return (
     <LayoutScreen>
+      <DrawerBar  title="Ceramica" />
       <View style={styles.container}>
         <Text style={styles.title}>Drawer</Text>
         <View style={{
@@ -32,8 +34,6 @@ const StackIndex = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   title: {
     fontSize: 20,

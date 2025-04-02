@@ -1,6 +1,7 @@
 import { View } from 'react-native'
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 interface Props {
   children: React.ReactNode | React.ReactNode[]
@@ -8,10 +9,10 @@ interface Props {
 
 function LayoutScreen({ children }: Props) {
   return (
-    <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <StatusBar style='dark' backgroundColor='#FFFFFF' />
       {children}
-    </View>
+    </SafeAreaView>
   )
 }
 

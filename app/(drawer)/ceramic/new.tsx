@@ -1,5 +1,6 @@
 import Button from "@/components/Button/Button";
 import IconButton from "@/components/IconButton/IconButton";
+import StackBar from "@/components/StackBar/StackBar";
 import LayoutScreen from "@/layouts/LayoutScreen";
 import { AntDesign } from "@expo/vector-icons";
 import Drawer from "expo-router/drawer";
@@ -8,7 +9,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 const StackNew = () => {
   return (
     <LayoutScreen>
-      <Drawer.Screen options={{headerShown: false}} /> 
+      <StackBar title="Nueva Ceramica" /> 
       <View style={styles.container}>
         <Text style={styles.title}>Drawer</Text>
       </View>

@@ -1,3 +1,4 @@
+import DrawerBar from '@/components/DrawerBar/DrawerBar';
 import LayoutScreen from '@/layouts/LayoutScreen';
 import { View } from 'react-native';
 import { StyleSheet, Text } from 'react-native';
@@ -6,6 +7,7 @@ import { StyleSheet, Text } from 'react-native';
 export default function TabHomeScreen() {
   return (
     <LayoutScreen>
+      <DrawerBar title='Inicio' />
       <View style={styles.container}>
         <Text style={styles.title}>Drawer Home Screen</Text>
         <View style={styles.separator} />
