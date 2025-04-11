@@ -8,6 +8,7 @@ export default function CeramicStackLayout() {
       <Stack.Screen name="cloudupload" />
       <Stack.Screen name="show" />
       <Stack.Screen name="update" />
+      <Stack.Screen name="inventory" />
     </Stack>
   );
 }

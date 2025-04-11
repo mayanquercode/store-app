@@ -3,6 +3,7 @@ import IconButton from "@/components/IconButton/IconButton";
 import useListCeramic from "@/core/ceramic/infrastructure/hooks/useListCeramic";
 import LayoutScreen from "@/layouts/LayoutScreen";
 import CeramicCardHome from "@/ui/ceramic/CeramicCardHome";
+import { FontAwesome5 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
@@ -17,7 +18,11 @@ const StackIndex = () => {
 
   const handleNavigationPageCloudupload = () => {
     router.push("/ceramic/cloudupload");
-  }
+  };
+
+  const handleNavigationInventory = () => {
+    router.push("/ceramic/inventory");
+  };
 
   return (
     <LayoutScreen>
@@ -32,6 +37,20 @@ const StackIndex = () => {
           </View>
         ))}
       </ScrollView>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 30,
+          right: 120,
+        }}
+      >
+        <IconButton
+          onPress={handleNavigationInventory}
+          icon={<FontAwesome5 name="clipboard-list" />}
+          variant="RAISED"
+          shape="square"
+        />
+      </View>
       <View
         style={{
           position: "absolute",
