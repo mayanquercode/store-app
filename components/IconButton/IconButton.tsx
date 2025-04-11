@@ -1,36 +1,42 @@
 import React from 'react';
-import { TouchableOpacity, TouchableOpacityProps, StyleSheet, ViewStyle, Platform } from 'react-native';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import {
+  TouchableOpacity,
+  TouchableOpacityProps,
+  ViewStyle,
+  Platform,
+} from 'react-native';
+import AntDesign from '@expo/vector-icons/AntDesign'; // Librería por defecto
 
 type ButtonVariant = 'SMOOTH' | 'GHOST' | 'RAISED';
 type ButtonType = 'DEFAULT' | 'WARNING' | 'POSITIVE' | 'ATTENTION' | 'PREVIOUS';
-type ButtonShape = 'circle' | 'square'; // Nueva prop para la forma
+type ButtonShape = 'circle' | 'square';
+type IconSize = 'small' | 'medium' | 'large';
 
 type IconButtonProps = {
-  iconName: keyof typeof AntDesign.glyphMap;
+  icon?: React.ReactElement;
+  iconName?: keyof typeof AntDesign.glyphMap; // Icono como string de AntDesign
   variant?: ButtonVariant;
   type?: ButtonType;
-  size?: 'small' | 'medium' | 'large';
-  shape?: ButtonShape; // Prop para elegir la forma
-  borderRadius?: number; // Opcional para personalizar el border radius en forma cuadrada
+  size?: IconSize;
+  shape?: ButtonShape;
+  borderRadius?: number;
   style?: ViewStyle;
 } & TouchableOpacityProps;
 
 const IconButton: React.FC<IconButtonProps> = ({
+  icon,
   iconName,
   variant = 'SMOOTH',
   type = 'DEFAULT',
   size = 'medium',
-  shape = 'circle', // Valor por defecto: circular
-  borderRadius = 8, // Valor por defecto para forma cuadrada
+  shape = 'circle',
+  borderRadius = 8,
   style,
   ...props
 }) => {
-  // Tamaños base
   const iconSize = size === 'small' ? 16 : size === 'large' ? 24 : 20;
   const buttonSize = size === 'small' ? 36 : size === 'large' ? 48 : 40;
 
-  // Colores según el tipo
   const getColors = () => {
     switch (type) {
       case 'WARNING':
@@ -48,21 +54,18 @@ const IconButton: React.FC<IconButtonProps> = ({
 
   const colors = getColors();
 
-  // Determinar el borderRadius según la forma
   const getBorderRadius = () => {
     return shape === 'circle' ? buttonSize / 2 : borderRadius;
   };
 
-  // Estilos base
-  const baseStyles = {
+  const baseStyles: ViewStyle = {
     width: buttonSize,
     height: buttonSize,
     borderRadius: getBorderRadius(),
     alignItems: 'center',
     justifyContent: 'center',
-  } as ViewStyle;
+  };
 
-  // Estilos para cada variante
   const variantStyles = {
     SMOOTH: {
       backgroundColor: colors.bg,
@@ -88,17 +91,35 @@ const IconButton: React.FC<IconButtonProps> = ({
     },
   };
 
+  // Determina qué ícono usar: personalizado o por nombre
+  const renderIcon = () => {
+    if (icon) {
+      return React.cloneElement(icon, {
+        size: icon.props.size || iconSize,
+        color: icon.props.color || (variant === 'GHOST' ? colors.border : colors.icon),
+      });
+    }
+
+    if (iconName) {
+      return (
+        <AntDesign
+          name={iconName}
+          size={iconSize}
+          color={variant === 'GHOST' ? colors.border : colors.icon}
+        />
+      );
+    }
+
+    return null;
+  };
+
   return (
     <TouchableOpacity
       style={[baseStyles, variantStyles[variant], style]}
       activeOpacity={0.7}
       {...props}
     >
-      <AntDesign 
-        name={iconName} 
-        size={iconSize} 
-        color={variant === 'GHOST' ? colors.border : colors.icon} 
-      />
+      {renderIcon()}
     </TouchableOpacity>
   );
 };

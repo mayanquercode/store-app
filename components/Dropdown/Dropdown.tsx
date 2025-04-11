@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, TouchableWithoutFeedback, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface DropdownItem {
@@ -83,7 +83,7 @@ const Dropdown: React.FC<DropdownProps> = ({
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         
-        <View style={[
+        <ScrollView style={[
           styles.dropdownList, 
           { 
             top: dropdownPosition.top,
@@ -100,7 +100,7 @@ const Dropdown: React.FC<DropdownProps> = ({
               <Text style={styles.itemText}>{item.label}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       </Modal>
     </View>
   );

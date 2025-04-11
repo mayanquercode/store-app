@@ -5,6 +5,9 @@ export default function CeramicStackLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="index" />
       <Stack.Screen name="new" />
+      <Stack.Screen name="cloudupload" />
+      <Stack.Screen name="show" />
+      <Stack.Screen name="update" />
     </Stack>
   );
 }

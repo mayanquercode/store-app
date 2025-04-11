@@ -1,31 +1,64 @@
-import Button from "@/components/Button/Button";
 import DrawerBar from "@/components/DrawerBar/DrawerBar";
 import IconButton from "@/components/IconButton/IconButton";
+import useListCeramic from "@/core/ceramic/infrastructure/hooks/useListCeramic";
 import LayoutScreen from "@/layouts/LayoutScreen";
-import { AntDesign } from "@expo/vector-icons";
-import { useNavigation, useRouter } from "expo-router";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import CeramicCardHome from "@/ui/ceramic/CeramicCardHome";
+import { useRouter } from "expo-router";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 const StackIndex = () => {
+  // Hooks
+  const router = useRouter();
+  const { ceramics } = useListCeramic();
 
-  const router = useRouter()
+  const handleNavigationPage = () => {
+    router.push("/ceramic/new");
+  };
 
-  const handleNavigationPage = () =>{
-    router.push('/ceramic/new')
+  const handleNavigationPageCloudupload = () => {
+    router.push("/ceramic/cloudupload");
   }
 
   return (
     <LayoutScreen>
-      <DrawerBar  title="Ceramica" />
-      <View style={styles.container}>
-        <Text style={styles.title}>Drawer</Text>
-        <View style={{
-          position: 'absolute',
+      <DrawerBar title="Ceramica" />
+      <ScrollView style={styles.container}>
+        {ceramics.map((item, index) => (
+          <View
+            key={item.code}
+            style={{ backgroundColor: index % 2 === 0 ? "#ffffff" : "#f1f5f9" }}
+          >
+            <CeramicCardHome ceramic={item} />
+          </View>
+        ))}
+      </ScrollView>
+      <View
+        style={{
+          position: "absolute",
           bottom: 30,
-          right: 20
-        }}>
-          <IconButton onPress={handleNavigationPage} iconName="plus"  variant="RAISED" shape="square" />
-        </View>
+          right: 20,
+        }}
+      >
+        <IconButton
+          onPress={handleNavigationPage}
+          iconName="plus"
+          variant="RAISED"
+          shape="square"
+        />
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 30,
+          right: 70,
+        }}
+      >
+        <IconButton
+          onPress={handleNavigationPageCloudupload}
+          iconName="cloudupload"
+          variant="RAISED"
+          shape="square"
+        />
       </View>
     </LayoutScreen>
   );
