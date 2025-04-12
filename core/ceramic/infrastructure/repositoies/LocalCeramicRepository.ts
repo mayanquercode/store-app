@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ceramic, CeramicRepository } from "../../domain/entities";
 
-const STORAGE_KEY = '@ceramics_v1.0.0';
+const STORAGE_KEY = '@ceramics_v1.0.1';
 
 export default class LocalCeramicRepository implements CeramicRepository {
   async getAll(): Promise<Ceramic[]> {
