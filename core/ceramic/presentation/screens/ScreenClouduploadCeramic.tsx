@@ -3,7 +3,7 @@ import { View, StyleSheet, ScrollView, Text, Alert } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import { Ceramic } from "@/core/ceramic/domain/entities";
 import { localRepository } from "@/core/ceramic/dependencies";
-import IconButton from "@/components/IconButton/IconButton";
+import IconButton from "@/components/Buttons/IconButton";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ceramicRepository = localRepository;
