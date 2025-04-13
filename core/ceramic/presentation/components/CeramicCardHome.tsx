@@ -1,29 +1,27 @@
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { Ceramic } from "@/core/ceramic/domain/entities";
 import {
   FontAwesome5,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { Ceramic } from "../../domain/entities";
 
 interface Props {
   ceramic: Ceramic;
 }
 
 const CeramicCardHome = ({ ceramic }: Props) => {
-
   // Hooks
-    const router = useRouter();
-  
-    const handleNavigationCeramic = () => {
-      router.push({
-        pathname: "/ceramic/show",
-        params: { code: ceramic.code },
-      });
-    };
-    
+  const router = useRouter();
+
+  const handleNavigationCeramic = () => {
+    router.push({
+      pathname: "/ceramic/show",
+      params: { code: ceramic.code },
+    });
+  };
 
   const boxInfo =
     ceramic.box.format.trim() === ""

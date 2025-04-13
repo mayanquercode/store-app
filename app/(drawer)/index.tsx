@@ -1,16 +1,17 @@
-import DrawerBar from '@/components/DrawerBar/DrawerBar';
-import LayoutScreen from '@/layouts/LayoutScreen';
-import { View } from 'react-native';
-import { StyleSheet, Text } from 'react-native';
-
+import DrawerBar from "@/components/DrawerBar/DrawerBar";
+import Text from "@/components/Text/Text";
+import LayoutScreen from "@/layouts/LayoutScreen";
+import { View } from "react-native";
+import { StyleSheet } from "react-native";
 
 export default function TabHomeScreen() {
   return (
     <LayoutScreen>
-      <DrawerBar title='Inicio' />
+      <DrawerBar title="Inicio" />
       <View style={styles.container}>
-        <Text style={styles.title}>Drawer Home Screen</Text>
-        <View style={styles.separator} />
+        <Text size="2xl" weight="600">
+          Drawer Home Screen
+        </Text>
       </View>
     </LayoutScreen>
   );
@@ -19,16 +20,16 @@ export default function TabHomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   separator: {
     marginVertical: 30,
     height: 1,
-    width: '80%',
+    width: "80%",
   },
 });
