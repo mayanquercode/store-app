@@ -97,7 +97,7 @@ const ScreenUpdateCeramic = () => {
     }
 
     updateCeramic(ceramicData).then((result) => {
-      router.push("/(drawer)/ceramic");
+      router.back();
     });
   };
 

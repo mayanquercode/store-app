@@ -5,6 +5,9 @@ import CeramicCardInventory from "@/core/ceramic/presentation/components/Ceramic
 import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
+import Text from "@/components/Text/Text";
+import { Voucher_Type } from "./ScreenShowCeramic";
+import Input from "@/components/Input/Input";
 
 interface DropdownItems {
   label: string;
@@ -12,67 +15,49 @@ interface DropdownItems {
 }
 
 const ScreenInventoryCeramic = () => {
-  const [dropdownSelect, setDropdownSelect] = useState<string>("");
-  const { ceramics } = useListCeramic();
 
-  const dropdownItems: DropdownItems[] = ceramics.map(({ name, code }) => ({
-    label: name,
-    value: code,
-  }));
+  const [voucher, setVoucher] = useState<Voucher_Type | string>('')
+  const [dropdownItems, _] = useState<{label: string; value: Voucher_Type}[]>([
+    {
+      label: 'Factura',
+      value: 'INVOICE'
+    },
+    {
+      label: 'Transferencia',
+      value: 'TRANSFER'
+    },
+    {
+      label: 'Nota Entrega',
+      value: 'DELIVERY_NOTE'
+    }
+  ]);
 
-  const selectedCeramic = ceramics.find((item) => item.code === dropdownSelect);
+
+  const onSelectVoucher = (item: { label: string; value: Voucher_Type }) => {
+    setVoucher(item.value);
+  }
 
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
         <Dropdown
-          label="Buscar cerámica"
           items={dropdownItems}
-          onSelect={(item) => setDropdownSelect(item.value)}
-          placeholder="Seleccione cerámica"
-          selectedValue={dropdownSelect}
+          label="Comprobante"
+          onSelect={onSelectVoucher as never}
+          selectedValue={voucher}
         />
-
-        {/* Mostrar la tarjeta solo si hay una cerámica seleccionada */}
-        {selectedCeramic && <CeramicCardInventory ceramic={selectedCeramic} />}
-      </View>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 30,
-          right: 20,
-        }}
-      >
-        <IconButton
-          icon={<FontAwesome5 name="file-invoice" size={24} />}
-          variant="RAISED"
-          shape="square"
-        />
-      </View>
-
-      <View
-        style={{
-          position: "absolute",
-          bottom: 30,
-          right: 70,
-        }}
-      >
-        <IconButton
-          icon={<FontAwesome5 name="truck-loading" size={19} />}
-          variant="RAISED"
-          shape="square"
-        />
+        <Input label="Numero Comprobante" />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  screen: {flex: 1},
+  screen: { flex: 1 },
   container: {
     padding: 20,
     backgroundColor: "#fff",
   },
 });
 
-export default ScreenInventoryCeramic
+export default ScreenInventoryCeramic;
