@@ -1,11 +1,11 @@
 import Button from "@/components/Buttons/Button";
-import Dropdown from "@/components/Dropdown/Dropdown";
 import Input from "@/components/Input/Input";
 import { Ceramic } from "@/core/ceramic/domain/entities";
 import useUpdateCeramic from "@/core/ceramic/infrastructure/hooks/useUpdateCeramic";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
+import FormatsDropdownItems from "../components/FormatsDropdownItems";
 
 type FormValues = {
   code: string;
@@ -21,7 +21,7 @@ const ScreenUpdateCeramic = () => {
   const updateCeramic = useUpdateCeramic();
 
   const initialData: Ceramic = JSON.parse(ceramic);
-  
+
   const [formValues, setFormValues] = useState<FormValues>({
     code: initialData.code || "",
     name: initialData.name || "",
@@ -31,36 +31,26 @@ const ScreenUpdateCeramic = () => {
     format: initialData.box.format || "",
   });
 
-  const dropdownItems = [
-    { label: "60X120", value: "60X120" },
-    { label: "60X60", value: "60X60" },
-    { label: "30X60", value: "30X60" },
-    { label: "20X61", value: "20X61" },
-    { label: "45X45", value: "45X45" },
-    { label: "27X45", value: "27X45" },
-    { label: "30X30", value: "30X30" },
-  ];
-
   const handleTextChange = (field: keyof FormValues) => (text: string) => {
-    setFormValues(prev => ({ ...prev, [field]: text }));
+    setFormValues((prev) => ({ ...prev, [field]: text }));
   };
 
   const handleNumberChange = (field: keyof FormValues) => (text: string) => {
     // Permitir vacío para borrado
     if (text === "") {
-      setFormValues(prev => ({ ...prev, [field]: "" }));
+      setFormValues((prev) => ({ ...prev, [field]: "" }));
       return;
     }
-    
+
     // Validar que sea número válido
-    const numericValue = text.replace(',', '.');
+    const numericValue = text.replace(",", ".");
     if (/^\d*\.?\d*$/.test(numericValue)) {
-      setFormValues(prev => ({ ...prev, [field]: numericValue }));
+      setFormValues((prev) => ({ ...prev, [field]: numericValue }));
     }
   };
 
   const handleFormatChange = (item: { value: string }) => {
-    setFormValues(prev => ({ ...prev, format: item.value }));
+    setFormValues((prev) => ({ ...prev, format: item.value }));
   };
 
   const prepareCeramicData = (): Ceramic => {
@@ -88,18 +78,27 @@ const ScreenUpdateCeramic = () => {
     const ceramicData = prepareCeramicData();
 
     // Validaciones
-    if (!ceramicData.code.trim() || !ceramicData.name.trim() || !ceramicData.box.format) {
+    if (
+      !ceramicData.code.trim() ||
+      !ceramicData.name.trim() ||
+      !ceramicData.box.format
+    ) {
       Alert.alert("Error", "Por favor complete todos los campos requeridos");
       return;
     }
 
-    if (isNaN(ceramicData.box.meterBox) || isNaN(ceramicData.box.meterPiece) || isNaN(ceramicData.box.numPieces)) {
+    if (
+      isNaN(ceramicData.box.meterBox) ||
+      isNaN(ceramicData.box.meterPiece) ||
+      isNaN(ceramicData.box.numPieces)
+    ) {
       Alert.alert("Error", "Los valores numéricos no son válidos");
       return;
     }
 
-    updateCeramic(ceramicData)
-
+    updateCeramic(ceramicData).then((result) => {
+      router.push("/(drawer)/ceramic");
+    });
   };
 
   return (
@@ -109,7 +108,7 @@ const ScreenUpdateCeramic = () => {
           <Input
             label="Código"
             value={formValues.code}
-            onChangeText={handleTextChange('code')}
+            onChangeText={handleTextChange("code")}
             placeholder="Ingrese código"
           />
         </View>
@@ -118,7 +117,7 @@ const ScreenUpdateCeramic = () => {
           <Input
             label="Nombre"
             value={formValues.name}
-            onChangeText={handleTextChange('name')}
+            onChangeText={handleTextChange("name")}
             placeholder="Ingrese nombre"
           />
         </View>
@@ -128,18 +127,15 @@ const ScreenUpdateCeramic = () => {
             <Input
               label="Caja (m²)"
               value={formValues.meterBox}
-              onChangeText={handleNumberChange('meterBox')}
+              onChangeText={handleNumberChange("meterBox")}
               placeholder="0.00"
               keyboardType="decimal-pad"
             />
           </View>
 
           <View style={[styles.inputContainer, styles.halfWidth]}>
-            <Dropdown
-              label="Formato"
-              items={dropdownItems}
+            <FormatsDropdownItems
               onSelect={handleFormatChange}
-              placeholder="Seleccione formato"
               selectedValue={formValues.format}
             />
           </View>
@@ -150,7 +146,7 @@ const ScreenUpdateCeramic = () => {
             <Input
               label="Pieza (m²)"
               value={formValues.meterPiece}
-              onChangeText={handleNumberChange('meterPiece')}
+              onChangeText={handleNumberChange("meterPiece")}
               placeholder="0.00"
               keyboardType="decimal-pad"
             />
@@ -160,7 +156,7 @@ const ScreenUpdateCeramic = () => {
             <Input
               label="# Piezas"
               value={formValues.numPieces}
-              onChangeText={handleNumberChange('numPieces')}
+              onChangeText={handleNumberChange("numPieces")}
               placeholder="0"
               keyboardType="numeric"
             />
@@ -180,7 +176,7 @@ const ScreenUpdateCeramic = () => {
 };
 
 const styles = StyleSheet.create({
-  screen: {flex: 1},
+  screen: { flex: 1 },
   container: {
     flex: 1,
     padding: 20,

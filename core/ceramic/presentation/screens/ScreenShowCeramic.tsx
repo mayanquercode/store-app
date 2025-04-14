@@ -3,17 +3,34 @@ import IconButtonRouter from "@/components/Buttons/IconButtonRouter";
 import useGetCeramic from "@/core/ceramic/infrastructure/hooks/useGetCeramic";
 import CeramicInfoItem from "@/core/ceramic/presentation/components/CeramicInfoItem";
 import ContainerCeramicInfo from "@/core/ceramic/presentation/components/ContainerCeramicInfo";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
+import DeleteAnimatedModal, {
+  DeleteAnimatedModalRef,
+} from "../components/DeleteAnimatedModal";
+import useRemoveCeramic from "../../infrastructure/hooks/useRemoveCeramic";
 
 const ScreenShowCeramic = () => {
   const { code } = useLocalSearchParams<{ code: string }>();
   const { ceramic } = useGetCeramic(code);
+  const removeCeramic = useRemoveCeramic();
+  const modalRef = useRef<DeleteAnimatedModalRef>(null);
+
+  const handleDelete = () => {
+    removeCeramic(ceramic.code).then((res) => {
+      if (res.remove) {
+        router.push("/(drawer)/ceramic");
+      }
+    });
+  };
 
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
-        <Text style={[styles.name, {fontFamily: 'poppins700'}]}>{ceramic.name}</Text>
+        <Text style={[styles.name, { fontFamily: "poppins700" }]}>
+          {ceramic.name}
+        </Text>
         <Text style={styles.code}>{ceramic.code}</Text>
 
         <ContainerCeramicInfo ceramic={ceramic} />
@@ -21,7 +38,10 @@ const ScreenShowCeramic = () => {
         <CeramicInfoItem
           iconName={{ materialCommunity: "note-text" }}
           iconSize={17}
-          text={`${parseInt(`${ceramic.stock.warehouse * ceramic.box.meterBox}`,10)} cajas`}
+          text={`${parseInt(
+            `${ceramic.stock.warehouse * ceramic.box.meterBox}`,
+            10
+          )} cajas`}
         />
       </View>
       <View
@@ -38,6 +58,7 @@ const ScreenShowCeramic = () => {
           variant="RAISED"
           shape="square"
           type="ATTENTION"
+          onPress={() => modalRef.current?.show()}
         />
         <IconButtonRouter
           iconName="edit"
@@ -47,13 +68,23 @@ const ScreenShowCeramic = () => {
           params={{ ceramic: JSON.stringify(ceramic) }}
         />
       </View>
+      <DeleteAnimatedModal
+        ref={modalRef}
+        onConfirm={handleDelete}
+        title={"Eliminar Ceramica"}
+        message="Esta accion borrara toda la informacion asosiada al producto"
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        modalStyle={styles.customModal}
+        titleStyle={styles.customTitle}
+      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1
+    flex: 1,
   },
   container: {
     padding: 20,
@@ -69,6 +100,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#44475a75",
     marginBottom: 15,
+  },
+  customModal: {
+    backgroundColor: "#f8f8f8",
+  },
+  customTitle: {
+    color: "#ff4444",
   },
 });
 

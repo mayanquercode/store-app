@@ -1,9 +1,9 @@
 import Button from "@/components/Buttons/Button";
-import Dropdown from "@/components/Dropdown/Dropdown";
 import Input from "@/components/Input/Input";
 import useCreateNewCeramic from "@/core/ceramic/infrastructure/hooks/useCreateNewCeramic";
 import { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
+import FormatsDropdownItems from "../components/FormatsDropdownItems";
 
 interface Ceramic {
   name: string;
@@ -26,16 +26,6 @@ const initialFormData: Ceramic = {
 const ScreenNewCeramic = () => {
   const [formData, setFormData] = useState<Ceramic>(initialFormData);
   const createNewCeramic = useCreateNewCeramic();
-
-  const dropdownItems = [
-    { label: "60X120", value: "60X120" },
-    { label: "60X60", value: "60X60" },
-    { label: "30X60", value: "30X60" },
-    { label: "20X61", value: "20X6" },
-    { label: "45X45", value: "45X45" },
-    { label: "27X45", value: "27X45" },
-    { label: "30X30", value: "30X30" },
-  ];
 
   const onCreateCeramic = async () => {
     const { code, box, name, format, piece, pieces } = formData;
@@ -94,13 +84,10 @@ const ScreenNewCeramic = () => {
           </View>
 
           <View style={[styles.inputContainer, styles.halfWidth]}>
-            <Dropdown
-              label="Formato"
-              items={dropdownItems}
+            <FormatsDropdownItems
               onSelect={(item) =>
                 setFormData({ ...formData, format: item.value })
               }
-              placeholder="Seleccione formato"
               selectedValue={formData.format}
             />
           </View>

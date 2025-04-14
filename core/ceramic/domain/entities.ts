@@ -31,5 +31,6 @@ export interface NewCeramic {
 export interface CeramicRepository {
   getAll(): Promise<Ceramic[]>
   getOne(code:string): Promise<Ceramic|null>
+  removeOne(code:string): Promise<boolean>
   save(ceramic:Ceramic):Promise<void>
 } 

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Ceramic, CeramicRepository } from "../../domain/entities";
 
-const STORAGE_KEY = '@ceramics_v1.0.1';
+const STORAGE_KEY = '@ceramics_v1.0.2';
 
 export default class LocalCeramicRepository implements CeramicRepository {
   async getAll(): Promise<Ceramic[]> {
@@ -18,6 +18,29 @@ export default class LocalCeramicRepository implements CeramicRepository {
     const data = await this.getAll();
     const ceramic = data.find(item => item.code === code);
     return ceramic || null;
+  }
+
+  async removeOne(code: string): Promise<boolean> {
+    try {
+      const current = await this.getAll();
+      const initialLength = current.length;
+      
+      // Filtrar el array para excluir el elemento con el código especificado
+      const updated = current.filter(item => item.code !== code);
+      
+      // Si no hubo cambios, retornar false
+      if (updated.length === initialLength) {
+        return false;
+      }
+      
+      // Guardar el nuevo array sin el elemento eliminado
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return true;
+      
+    } catch (error) {
+      console.error("Error removing item from AsyncStorage:", error);
+      return false;
+    }
   }
 
   async save(ceramic: Ceramic): Promise<void> {
